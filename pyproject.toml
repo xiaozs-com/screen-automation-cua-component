@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "screen-automation-cua-component"
+version = "0.1.0"
+description = "Bounded Cua Driver adapter for Screen Automation Helper"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "xiaozs-com" }]
+dependencies = []
+
+[project.scripts]
+screen-automation-cua-sidecar = "sah_cua_component.sidecar:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
