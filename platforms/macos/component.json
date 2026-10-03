@@ -1,0 +1,39 @@
+{
+  "id": "cua-driver-macos",
+  "name": "后台窗口操作（Cua Driver，macOS）",
+  "version": "0.1.0",
+  "protocol": "screen-automation-cua-sidecar@1",
+  "capabilities": [
+    "desktop.background-input@1"
+  ],
+  "supported_runtime_platforms": [
+    "macos-x64",
+    "macos-arm64"
+  ],
+  "minimum_macos": "14.0",
+  "entry": "screen-automation-cua-sidecar",
+  "driver_entry": "CuaDriver.app/Contents/MacOS/cua-driver",
+  "runtime": {
+    "mode": "bounded",
+    "private_socket_required": true,
+    "autostart": false,
+    "foreground_fallback": false,
+    "telemetry": false,
+    "update_check": false
+  },
+  "permissions": [
+    "accessibility",
+    "screen-recording"
+  ],
+  "upstream": {
+    "name": "Cua Driver",
+    "source": "https://github.com/trycua/cua",
+    "version": "0.32.0",
+    "tag": "cua-driver-rs-v0.32.0",
+    "commit": "66ca6c0833a7e04dd611c473100ba36bbf1f11be",
+    "lock": "upstream/cua-driver-0.32.0-macos-universal.lock.json",
+    "license": "MIT",
+    "bundled": true
+  },
+  "retains_user_data_on_uninstall": false
+}

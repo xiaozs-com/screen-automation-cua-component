@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 from pathlib import Path
 from typing import Any, Callable, Sequence
@@ -15,6 +16,27 @@ class DriverError(RuntimeError):
 Runner = Callable[[Sequence[str], float], subprocess.CompletedProcess[str]]
 
 
+def _safe_environment() -> dict[str, str]:
+    allowed = {
+        "APPDATA",
+        "HOME",
+        "LANG",
+        "LC_ALL",
+        "LOCALAPPDATA",
+        "SYSTEMROOT",
+        "TEMP",
+        "TMP",
+        "TMPDIR",
+        "USERPROFILE",
+        "WINDIR",
+    }
+    environment = {key: value for key, value in os.environ.items() if key.upper() in allowed}
+    environment["PATH"] = os.defpath
+    environment["CUA_DRIVER_RS_TELEMETRY_ENABLED"] = "false"
+    environment["CUA_DRIVER_RS_UPDATE_CHECK"] = "false"
+    return environment
+
+
 def _default_runner(command: Sequence[str], timeout: float) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
         list(command),
@@ -24,6 +46,7 @@ def _default_runner(command: Sequence[str], timeout: float) -> subprocess.Comple
         errors="replace",
         timeout=timeout,
         check=False,
+        env=_safe_environment(),
         creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
     )
 
@@ -33,10 +56,12 @@ class CuaDriverCli:
         self,
         executable: Path,
         *,
+        socket_path: Path | None = None,
         runner: Runner = _default_runner,
         timeout_seconds: float = 30.0,
     ) -> None:
         self.executable = Path(executable)
+        self.socket_path = Path(socket_path) if socket_path is not None else None
         self.runner = runner
         self.timeout_seconds = float(timeout_seconds)
 
@@ -62,7 +87,11 @@ class CuaDriverCli:
 
     def call(self, tool: str, arguments: dict[str, Any]) -> dict[str, Any]:
         payload = json.dumps(arguments, ensure_ascii=False, separators=(",", ":"))
-        return self._parse_json(self._run(("call", tool, payload)))
+        command = ["call"]
+        if self.socket_path is not None:
+            command.extend(("--socket", str(self.socket_path)))
+        command.extend((tool, payload))
+        return self._parse_json(self._run(command))
 
     @staticmethod
     def _parse_json(value: str) -> dict[str, Any]:
@@ -73,4 +102,3 @@ class CuaDriverCli:
         if not isinstance(parsed, dict):
             raise DriverError("Cua Driver JSON 响应必须是对象")
         return parsed
-

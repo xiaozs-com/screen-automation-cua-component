@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "verified_at": "2026-09-29T19:05:00+08:00",
+  "platform": "windows-x64",
+  "upstream": {
+    "name": "Cua Driver",
+    "repository": "https://github.com/trycua/cua",
+    "version": "0.30.4",
+    "tag": "cua-driver-rs-v0.30.4",
+    "commit": "bf6c76786d938070f4ecf1e44004752f69f518b8",
+    "published_at": "2026-09-28T21:38:51Z",
+    "release_url": "https://github.com/trycua/cua/releases/tag/cua-driver-rs-v0.30.4",
+    "license": "MIT"
+  },
+  "asset": {
+    "name": "cua-driver-rs-0.30.4-windows-x86_64-binary.zip",
+    "url": "https://github.com/trycua/cua/releases/download/cua-driver-rs-v0.30.4/cua-driver-rs-0.30.4-windows-x86_64-binary.zip",
+    "size": 30771456,
+    "sha256": "7b0ec893797fdeb0514d96f5797ad6aa53617eadcba2e47856461f60140c757b"
+  },
+  "license_file": {
+    "source_path": "LICENSE.md",
+    "source_url": "https://raw.githubusercontent.com/trycua/cua/bf6c76786d938070f4ecf1e44004752f69f518b8/LICENSE.md",
+    "local_path": "licenses/CUA_DRIVER_LICENSE.md",
+    "size": 1069,
+    "sha256": "c0779290c1d4783169aa3dbfb55feb505e563ef8a004bbf55298ceffcfbda8d9"
+  },
+  "files": {
+    "cua-cursor-theme.exe": {
+      "size": 2034000,
+      "sha256": "84af3e2ac7cc2f2cb901929a3bdb96b59a1620f691ca979cadd913884a57a6df"
+    },
+    "cua-driver-uia.exe": {
+      "size": 21921616,
+      "sha256": "11d0b8c3e74b7b77f219633de7abc5ae50d650082582578961e950fca2343c0c"
+    },
+    "cua-driver.exe": {
+      "size": 34281808,
+      "sha256": "94bb765aad94e2fdf715c6c152c4e2b2b1f93977779a7569e5abc6466beaeab2",
+      "authenticode": {
+        "status": "Valid",
+        "signer_subject": "CN=\"Cua AI, Inc.\", O=\"Cua AI, Inc.\", L=San Francisco, S=California, C=US",
+        "signer_thumbprint": "61AB5F305CA7A378EC4AAE0A958F41EFA3C3D38B"
+      }
+    },
+    "cua_driver_abi.h": {
+      "size": 7998,
+      "sha256": "c17169f41da321baa5e7e953323c3ad660b00790176ba381e93189fba3506587"
+    },
+    "cua_driver_node_runtime.node": {
+      "size": 633168,
+      "sha256": "7e2e0b22bcd49b29317cefc5b3edf5e23782d3d288de4ea68d813af379857393"
+    },
+    "cua_driver_sdk.dll": {
+      "size": 26830672,
+      "sha256": "a205af94cd05260d6864a7ee2b001bff4266eb0ca8a3194773a433b883775307"
+    }
+  },
+  "excluded": [
+    "cua-perception",
+    "ffmpeg",
+    "model files",
+    "application workflows",
+    "installer scripts",
+    "autostart configuration"
+  ]
+}

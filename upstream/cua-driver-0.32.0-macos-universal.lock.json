@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "verified_at": "2026-10-03T21:20:00+08:00",
+  "platform": "macos-universal",
+  "supported_architectures": [
+    "x86_64",
+    "arm64"
+  ],
+  "minimum_macos": "14.0",
+  "upstream": {
+    "name": "Cua Driver",
+    "repository": "https://github.com/trycua/cua",
+    "version": "0.32.0",
+    "tag": "cua-driver-rs-v0.32.0",
+    "commit": "66ca6c0833a7e04dd611c473100ba36bbf1f11be",
+    "published_at": "2026-10-01T21:34:36Z",
+    "release_url": "https://github.com/trycua/cua/releases/tag/cua-driver-rs-v0.32.0",
+    "license": "MIT"
+  },
+  "asset": {
+    "name": "cua-driver-rs-0.32.0-darwin-universal.tar.gz",
+    "url": "https://github.com/trycua/cua/releases/download/cua-driver-rs-v0.32.0/cua-driver-rs-0.32.0-darwin-universal.tar.gz",
+    "size": 74965055,
+    "sha256": "8ea16a3f533c056c0aaeb86e6dbf7f792c9cf43532f24595427d7ccde6921a3d"
+  },
+  "bundle": {
+    "path": "CuaDriver.app",
+    "identifier": "com.trycua.driver",
+    "executable": "CuaDriver.app/Contents/MacOS/cua-driver",
+    "required_architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "require_valid_codesign": true
+  },
+  "license_file": {
+    "source_path": "LICENSE.md",
+    "source_url": "https://raw.githubusercontent.com/trycua/cua/66ca6c0833a7e04dd611c473100ba36bbf1f11be/LICENSE.md",
+    "local_path": "licenses/CUA_DRIVER_LICENSE.md",
+    "size": 1069,
+    "sha256": "c0779290c1d4783169aa3dbfb55feb505e563ef8a004bbf55298ceffcfbda8d9"
+  },
+  "excluded": [
+    "cua-perception",
+    "ffmpeg",
+    "model files",
+    "application workflows",
+    "global installer scripts",
+    "autostart configuration"
+  ]
+}

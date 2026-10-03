@@ -22,6 +22,7 @@ METHOD_TO_TOOL = {
     "action.hotkey": "hotkey",
     "action.scroll": "scroll",
 }
+MAX_MESSAGE_BYTES = 2 * 1024 * 1024
 
 
 class SidecarService:
@@ -71,23 +72,33 @@ def serve(service: SidecarService, source: TextIO, sink: TextIO) -> None:
         if not raw_line.strip():
             continue
         try:
+            if len(raw_line.encode("utf-8")) > MAX_MESSAGE_BYTES:
+                raise ValueError("请求超过 2 MiB 限制")
             request = json.loads(raw_line)
             if not isinstance(request, dict):
                 raise ValueError("请求必须是 JSON 对象")
             response = service.dispatch(request)
         except (json.JSONDecodeError, ValueError) as exc:
             response = SidecarService._error("", "invalid_request", str(exc))
-        sink.write(json.dumps(response, ensure_ascii=False, separators=(",", ":")) + "\n")
+        encoded = json.dumps(response, ensure_ascii=False, separators=(",", ":"))
+        if len(encoded.encode("utf-8")) > MAX_MESSAGE_BYTES:
+            encoded = json.dumps(
+                SidecarService._error("", "response_too_large", "响应超过 2 MiB 限制"),
+                ensure_ascii=False,
+                separators=(",", ":"),
+            )
+        sink.write(encoded + "\n")
         sink.flush()
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--driver", required=True, type=Path)
+    parser.add_argument("--socket", type=Path)
     parser.add_argument("--allow-foreground", action="store_true")
     args = parser.parse_args(argv)
     service = SidecarService(
-        CuaDriverCli(args.driver),
+        CuaDriverCli(args.driver, socket_path=args.socket),
         policy=ActionPolicy(allow_foreground=args.allow_foreground),
     )
     serve(service, sys.stdin, sys.stdout)
@@ -96,4 +107,3 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

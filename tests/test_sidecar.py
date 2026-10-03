@@ -6,7 +6,7 @@ import unittest
 
 from sah_cua_component import PROTOCOL_ID
 from sah_cua_component.policy import ActionPolicy
-from sah_cua_component.sidecar import SidecarService, serve
+from sah_cua_component.sidecar import MAX_MESSAGE_BYTES, SidecarService, serve
 
 
 class FakeDriver:
@@ -42,6 +42,7 @@ class SidecarTests(unittest.TestCase):
             "params": {
                 "target": {"kind": "window", "pid": 5, "window_id": 9},
                 "element_index": 4,
+                "snapshot_id": "snapshot-4",
             },
         })
         self.assertTrue(response["ok"])
@@ -65,6 +66,13 @@ class SidecarTests(unittest.TestCase):
         responses = [json.loads(line) for line in sink.getvalue().splitlines()]
         self.assertEqual(responses[0]["error"]["code"], "invalid_request")
         self.assertTrue(responses[1]["ok"])
+
+    def test_oversized_request_is_rejected(self) -> None:
+        source = io.StringIO("x" * (MAX_MESSAGE_BYTES + 1) + "\n")
+        sink = io.StringIO()
+        serve(SidecarService(FakeDriver()), source, sink)
+        response = json.loads(sink.getvalue())
+        self.assertEqual(response["error"]["code"], "invalid_request")
 
 
 if __name__ == "__main__":

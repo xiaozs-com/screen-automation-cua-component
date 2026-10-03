@@ -6,10 +6,17 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from sah_cua_component.driver_cli import CuaDriverCli, DriverError
+from sah_cua_component.driver_cli import CuaDriverCli, DriverError, _safe_environment
 
 
 class DriverCliTests(unittest.TestCase):
+    def test_subprocess_environment_excludes_common_secrets(self) -> None:
+        environment = _safe_environment()
+        self.assertNotIn("AWS_SECRET_ACCESS_KEY", environment)
+        self.assertNotIn("OPENAI_API_KEY", environment)
+        self.assertEqual(environment["CUA_DRIVER_RS_TELEMETRY_ENABLED"], "false")
+        self.assertEqual(environment["CUA_DRIVER_RS_UPDATE_CHECK"], "false")
+
     def test_call_uses_compact_json_and_parses_object(self) -> None:
         calls = []
 
@@ -38,7 +45,24 @@ class DriverCliTests(unittest.TestCase):
             with self.assertRaisesRegex(DriverError, "background_unavailable"):
                 CuaDriverCli(executable, runner=runner).call("list_windows", {})
 
+    def test_call_can_target_component_private_socket(self) -> None:
+        calls = []
+
+        def runner(command, timeout):
+            calls.append(command)
+            return subprocess.CompletedProcess(command, 0, '{"ok":true}', "")
+
+        with tempfile.TemporaryDirectory() as directory:
+            executable = Path(directory) / "cua-driver"
+            executable.write_bytes(b"test")
+            socket = Path(directory) / "runtime.sock"
+            CuaDriverCli(executable, socket_path=socket, runner=runner).call(
+                "list_windows", {}
+            )
+
+        self.assertEqual(calls[0][1:4], ("call", "--socket", str(socket)))
+        self.assertEqual(calls[0][4], "list_windows")
+
 
 if __name__ == "__main__":
     unittest.main()
-

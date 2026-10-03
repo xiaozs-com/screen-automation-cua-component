@@ -1,0 +1,62 @@
+name: Build macOS component
+
+on:
+  workflow_dispatch:
+    inputs:
+      architecture:
+        description: macOS architecture to build
+        required: true
+        default: intel
+        type: choice
+        options:
+          - intel
+          - arm64
+          - both
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: macos-15-intel
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: PYTHONPATH=src python -m unittest discover -s tests -q
+      - run: bash -n scripts/stage_upstream_macos.sh packaging/macos/build_component.sh runtime/macos/*.sh acceptance/macos/build_test_window.sh
+
+  build-intel:
+    if: inputs.architecture == 'intel' || inputs.architecture == 'both'
+    needs: test
+    runs-on: macos-15-intel
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: ./packaging/macos/build_component.sh x86_64
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cua-component-macos-x64
+          path: |
+            dist/*-macos-x64.zip
+            dist/*-macos-x64.zip.sha256
+
+  build-arm64:
+    if: inputs.architecture == 'arm64' || inputs.architecture == 'both'
+    needs: test
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: ./packaging/macos/build_component.sh arm64
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cua-component-macos-arm64
+          path: |
+            dist/*-macos-arm64.zip
+            dist/*-macos-arm64.zip.sha256

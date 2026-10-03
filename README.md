@@ -8,9 +8,10 @@
 <https://github.com/trycua/cua>，采用 MIT License；正式分发前必须固定上游版本、校验发布
 文件哈希并随包保留上游许可证和第三方声明。
 
-## 第一阶段边界
+## 平台范围
 
-- 仅支持 Windows x64；Windows x86 明确不支持。
+- Windows 仅支持 x64；Windows x86 明确不支持。
+- macOS 支持 Intel x86_64 和 Apple Silicon arm64，最低 macOS 14；优先完成 Intel 真机验收。
 - 只接受精确的 `pid + window_id` 窗口目标。
 - 默认且强制优先使用 `delivery_mode=background`。
 - 不接受桌面绝对坐标，不操作任务栏、系统托盘或任意当前前台窗口。
@@ -33,11 +34,18 @@ py -m unittest discover -s tests -q
 py -m sah_cua_component.sidecar --driver C:\path\to\cua-driver.exe
 ```
 
+固定上游版本和只读暂存流程见 [`docs/UPSTREAM_PIN.md`](docs/UPSTREAM_PIN.md)。当前锁定 Cua
+Driver `0.30.4` 的官方 Windows x64 发布物；暂存脚本只下载、校验和解压到 Git 忽略的
+`build/`，不会执行 Cua、安装全局组件、修改 PATH 或注册自启动。
+
+macOS 版本的构建、私有 runtime 和无敏感内容真机验收见
+[`docs/MACOS_DEVELOPMENT.md`](docs/MACOS_DEVELOPMENT.md)。macOS 固定上游 `0.32.0` universal
+App Bundle，保留官方签名和 `com.trycua.driver` 权限身份。
+
 Sidecar 通过标准输入逐行接收 JSON，通过标准输出逐行返回 JSON。协议和宿主接入要求见
 [`docs/INTEGRATION_CONTRACT.md`](docs/INTEGRATION_CONTRACT.md)。
 
 ## 当前状态
 
-第一阶段只实现适配层和安全策略。正式可安装 ZIP、签名清单、小助手组件中心接入以及真实
-Windows x64 验收属于下一阶段；在这些完成前不能宣称已经可供最终用户安装。
-
+Windows 仍处于上游固定和适配层阶段。macOS 已加入构建与专用测试窗口源码，但必须在真实
+Intel Mac 上完成编译、权限、后台不抢焦点和鼠标验收后，才能宣称可供最终用户安装。

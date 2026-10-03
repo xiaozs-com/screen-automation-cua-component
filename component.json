@@ -12,10 +12,13 @@
   "upstream": {
     "name": "Cua Driver",
     "source": "https://github.com/trycua/cua",
+    "version": "0.30.4",
+    "tag": "cua-driver-rs-v0.30.4",
+    "commit": "bf6c76786d938070f4ecf1e44004752f69f518b8",
+    "lock": "upstream/cua-driver-0.30.4-windows-x64.lock.json",
     "license": "MIT",
     "bundled": false
   },
   "entry": "screen-automation-cua-sidecar.exe",
   "retains_user_data_on_uninstall": false
 }
-
