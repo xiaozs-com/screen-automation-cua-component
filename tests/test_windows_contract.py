@@ -60,6 +60,13 @@ class WindowsContractTests(unittest.TestCase):
         self.assertNotIn("COMPONENT_SIGNING_PRIVATE_KEY", workflow)
         self.assertIn("retention-days: 7", workflow)
 
+    def test_catalog_metadata_warns_future_components_to_merge(self) -> None:
+        metadata = (ROOT / "packaging/windows/create_release_metadata.ps1").read_text("utf-8")
+        self.assertIn("maintenance_notes", metadata)
+        self.assertIn("禁止覆盖或删除已有组件条目", metadata)
+        self.assertIn("浏览器增强是主仓库内置组件", metadata)
+        self.assertIn("最后上传本目录文件", metadata)
+
 
 if __name__ == "__main__":
     unittest.main()

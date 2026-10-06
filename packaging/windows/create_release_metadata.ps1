@@ -34,6 +34,14 @@ $manifest | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $manifestPath -En
 
 $catalog = [ordered]@{
     schema = 1
+    description = 'PD 小助手外部可选组件全局目录；浏览器增强是主仓库内置组件，不列入此文件。'
+    maintenance_notes = @(
+        '此文件在 /sah/components/ 下全局唯一，不属于某一个组件。',
+        '新增外部组件时必须合并到 components 数组，禁止覆盖或删除已有组件条目。',
+        '每个组件必须使用唯一 id 和独立子目录，并提供各平台的签名 latest-*.json。',
+        '修改任何字段后必须重新生成整个 catalog.json 的 Ed25519 签名。',
+        '发布顺序：先上传版本 ZIP，再上传组件 latest 清单，最后上传本目录文件。'
+    )
     components = @([ordered]@{
         id = $component.id
         name = $component.name

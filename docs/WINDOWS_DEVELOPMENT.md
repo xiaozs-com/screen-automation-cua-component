@@ -62,3 +62,7 @@ GitHub 仓库只保存源码，不通过 GitHub Release 向小助手分发安装
 
 `catalog.json` 与 `latest-windows-x64.json` 都必须使用小助手当前信任的组件密钥签名；ZIP 的大小与
 SHA-256 写入签名清单。历史版本目录需要保留，以便更新失败诊断和未来回退。
+
+JSON 不使用非法的 `//` 注释。全局目录通过已签名的 `description` 和 `maintenance_notes` 字段记录
+维护规则：浏览器增强不进入外部目录；新增组件必须合并而非覆盖已有条目；组件 ID 与子目录必须唯一；
+修改后重新签署整个目录，并始终最后上传 `catalog.json`。
