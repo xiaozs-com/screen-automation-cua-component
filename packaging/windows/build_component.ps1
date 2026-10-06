@@ -22,6 +22,7 @@ $dist = Join-Path $root 'dist'
 
 if (Test-Path -LiteralPath $work) { Remove-Item -LiteralPath $work -Recurse -Force }
 New-Item -ItemType Directory -Force -Path $work,$package,$dist,(Join-Path $package 'runtime') | Out-Null
+New-Item -ItemType Directory -Force -Path (Join-Path $package 'acceptance') | Out-Null
 & (Join-Path $root 'scripts\stage_upstream.ps1') -LockFile $LockFile -OutputDirectory $upstream
 
 & $Python -m venv $venv
@@ -37,6 +38,10 @@ Copy-Item -LiteralPath (Join-Path $root 'platforms\windows\component.json') -Des
 Copy-Item -LiteralPath (Join-Path $root 'THIRD_PARTY_NOTICES.md') -Destination $package
 Copy-Item -LiteralPath (Join-Path $root 'runtime\windows\start_private_runtime.ps1') -Destination (Join-Path $package 'runtime')
 Copy-Item -LiteralPath (Join-Path $root 'runtime\windows\stop_private_runtime.ps1') -Destination (Join-Path $package 'runtime')
+& (Join-Path $root 'acceptance\windows\build_test_window.ps1') -OutputDirectory (Join-Path $work 'acceptance') | Out-Null
+Copy-Item -LiteralPath (Join-Path $work 'acceptance\acceptance-safe-test-window.exe') -Destination (Join-Path $package 'acceptance')
+Copy-Item -LiteralPath (Join-Path $root 'runtime\windows\test-window-capabilities.yaml') -Destination (Join-Path $package 'acceptance')
+Copy-Item -LiteralPath (Join-Path $root 'acceptance\windows\test_component.ps1') -Destination (Join-Path $package 'acceptance')
 
 & (Join-Path $package 'screen-automation-cua-sidecar.exe') --help | Out-Null
 if ($LASTEXITCODE -ne 0) { throw 'Frozen sidecar smoke test failed.' }

@@ -43,6 +43,15 @@ class WindowsContractTests(unittest.TestCase):
         self.assertIn("screen-automation-cua-sidecar", build)
         self.assertNotIn("gh workflow run", build)
 
+    def test_packaged_acceptance_is_scoped_and_cleans_up(self) -> None:
+        script = (ROOT / "acceptance/windows/test_component.ps1").read_text("utf-8")
+        self.assertIn("acceptance-safe-test-window.exe", script)
+        self.assertIn("delivery_mode='background'", script)
+        self.assertIn("foreground_and_mouse_unchanged", script)
+        self.assertIn("clicked.route -eq 'accessibility'", script)
+        self.assertIn("stop_private_runtime.ps1", script)
+        self.assertNotIn("foreground'", script)
+
 
 if __name__ == "__main__":
     unittest.main()
