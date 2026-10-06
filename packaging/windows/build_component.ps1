@@ -10,7 +10,13 @@ if (-not [Environment]::Is64BitOperatingSystem -or
     [Runtime.InteropServices.RuntimeInformation]::OSArchitecture -ne [Runtime.InteropServices.Architecture]::X64) {
     throw 'A native Windows x64 build host is required.'
 }
-if (-not (Test-Path -LiteralPath $Python -PathType Leaf)) { throw "Python not found: $Python" }
+if (Test-Path -LiteralPath $Python -PathType Leaf) {
+    $Python = (Resolve-Path -LiteralPath $Python).Path
+} else {
+    $resolvedPython = Get-Command $Python -ErrorAction SilentlyContinue
+    if (-not $resolvedPython) { throw "Python not found: $Python" }
+    $Python = $resolvedPython.Source
+}
 
 $root = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 $component = Get-Content -LiteralPath (Join-Path $root 'platforms\windows\component.json') -Raw | ConvertFrom-Json

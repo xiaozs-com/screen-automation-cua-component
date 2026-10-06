@@ -44,3 +44,9 @@ Windows 是当前优先交付平台。它只支持原生 `x64`，不支持 Windo
 后台自检；脚本只启动专用窗口和私有 runtime，结束时会停止二者并删除临时权限清单。
 用户在测试期间仍可使用鼠标和切换窗口；这类用户活动只作为桌面观察结果报告，不会被误判为组件
 抢占。自检以 `delivery=background`、`route=accessibility` 和动作后新快照三项共同判定。
+
+## 正式发布
+
+`.github/workflows/release-windows.yml` 仅允许手动触发，并要求输入精确版本及
+`windows-x64-only` 范围确认。它使用仓库 Secret `COMPONENT_SIGNING_PRIVATE_KEY` 分别签署安装清单
+和外部目录，再创建不可变版本 Release。缺少 Secret 时工作流必须失败，不能发布未签名清单。
