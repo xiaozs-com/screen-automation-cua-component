@@ -52,13 +52,13 @@ class WindowsContractTests(unittest.TestCase):
         self.assertIn("stop_private_runtime.ps1", script)
         self.assertNotIn("foreground'", script)
 
-    def test_windows_release_is_manual_signed_and_scope_gated(self) -> None:
+    def test_windows_workflow_only_builds_unsigned_short_lived_artifact(self) -> None:
         workflow = (ROOT / ".github/workflows/release-windows.yml").read_text("utf-8")
         self.assertIn("workflow_dispatch:", workflow)
         self.assertNotIn("push:", workflow)
-        self.assertIn("windows-x64-only", workflow)
-        self.assertIn("COMPONENT_SIGNING_PRIVATE_KEY", workflow)
-        self.assertIn("sign_manifest.py", workflow)
+        self.assertNotIn("gh release", workflow)
+        self.assertNotIn("COMPONENT_SIGNING_PRIVATE_KEY", workflow)
+        self.assertIn("retention-days: 7", workflow)
 
 
 if __name__ == "__main__":

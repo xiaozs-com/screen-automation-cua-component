@@ -47,6 +47,7 @@ Windows 是当前优先交付平台。它只支持原生 `x64`，不支持 Windo
 
 ## 正式发布
 
-`.github/workflows/release-windows.yml` 仅允许手动触发，并要求输入精确版本及
-`windows-x64-only` 范围确认。它使用仓库 Secret `COMPONENT_SIGNING_PRIVATE_KEY` 分别签署安装清单
-和外部目录，再创建不可变版本 Release。缺少 Secret 时工作流必须失败，不能发布未签名清单。
+GitHub 仓库只保存源码，不通过 GitHub Release 向小助手分发安装包。可选的手动工作流只生成保留
+7 天的未签名构建产物，不会发布 Release。Windows ZIP、签名安装清单和签名外部组件目录统一发布
+到小助手自有组件服务器。`create_release_metadata.ps1` 接收服务器最终 HTTPS 下载地址并生成待签名
+元数据；签名和上传必须在持有 `COMPONENT_SIGNING_PRIVATE_KEY` 的受控发布环境完成。
