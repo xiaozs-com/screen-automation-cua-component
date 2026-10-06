@@ -51,3 +51,14 @@ GitHub 仓库只保存源码，不通过 GitHub Release 向小助手分发安装
 7 天的未签名构建产物，不会发布 Release。Windows ZIP、签名安装清单和签名外部组件目录统一发布
 到小助手自有组件服务器。`create_release_metadata.ps1` 接收服务器最终 HTTPS 下载地址并生成待签名
 元数据；签名和上传必须在持有 `COMPONENT_SIGNING_PRIVATE_KEY` 的受控发布环境完成。
+
+服务器布局与浏览器增强组件一致：
+
+```text
+/sah/components/catalog.json
+/sah/components/cua-driver-windows/latest-windows-x64.json
+/sah/components/cua-driver-windows/0.1.0/screen-automation-cua-component-0.1.0-windows-x64.zip
+```
+
+`catalog.json` 与 `latest-windows-x64.json` 都必须使用小助手当前信任的组件密钥签名；ZIP 的大小与
+SHA-256 写入签名清单。历史版本目录需要保留，以便更新失败诊断和未来回退。

@@ -2,6 +2,7 @@
 param(
     [Parameter(Mandatory)][string]$Archive,
     [Parameter(Mandatory)][string]$DownloadUrl,
+    [string]$ManifestUrl = '',
     [string]$OutputDirectory = (Split-Path -Parent $Archive),
     [string]$MinimumHelperVersion = '1.2.5'
 )
@@ -12,6 +13,8 @@ $component = Get-Content -LiteralPath (Join-Path $root 'platforms\windows\compon
 $archivePath = (Resolve-Path -LiteralPath $Archive).Path
 $item = Get-Item -LiteralPath $archivePath
 $hash = (Get-FileHash -LiteralPath $archivePath -Algorithm SHA256).Hash.ToLowerInvariant()
+$ManifestUrl = $ManifestUrl.Trim()
+if (-not $ManifestUrl) { $ManifestUrl = $DownloadUrl.Replace($item.Name, 'latest-windows-x64.json') }
 New-Item -ItemType Directory -Force -Path $OutputDirectory | Out-Null
 
 $manifest = [ordered]@{
@@ -37,7 +40,7 @@ $catalog = [ordered]@{
         category = '桌面增强'
         description = '独立安装的后台窗口操作组件；后台不可用时结构化拒绝，不自动切换前台。'
         supported_platforms = @('win32')
-        manifests = [ordered]@{ 'windows-x64' = $DownloadUrl.Replace($item.Name, 'latest-windows-x64.json') }
+        manifests = [ordered]@{ 'windows-x64' = $ManifestUrl }
         required_capabilities = @()
         acquisition = 'free'
         retains_user_data_on_uninstall = $false
