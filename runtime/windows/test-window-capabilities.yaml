@@ -1,0 +1,21 @@
+version: 3
+expires_after: 2h
+idle_timeout: 15m
+
+allow:
+  tools:
+    - list_windows
+    - get_window_state
+    - click
+    - type_text
+    - press_key
+    - hotkey
+    - scroll
+
+resources:
+  apps:
+    - executable: __SAFE_TEST_WINDOW_EXE__
+      launch: false
+      windows: all
+  desktop:
+    display: true

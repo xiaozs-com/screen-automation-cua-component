@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param(
-    [string]$LockFile = (Join-Path $PSScriptRoot '..\upstream\cua-driver-0.30.4-windows-x64.lock.json'),
+    [string]$LockFile = (Join-Path $PSScriptRoot '..\upstream\cua-driver-0.34.0-windows-x64.lock.json'),
     [string]$CacheDirectory = (Join-Path $PSScriptRoot '..\build\upstream-cache'),
     [string]$OutputDirectory = (Join-Path $PSScriptRoot '..\build\staged-upstream')
 )

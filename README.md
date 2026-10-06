@@ -35,8 +35,12 @@ py -m sah_cua_component.sidecar --driver C:\path\to\cua-driver.exe
 ```
 
 固定上游版本和只读暂存流程见 [`docs/UPSTREAM_PIN.md`](docs/UPSTREAM_PIN.md)。当前锁定 Cua
-Driver `0.30.4` 的官方 Windows x64 发布物；暂存脚本只下载、校验和解压到 Git 忽略的
+Driver `0.34.0` 的官方 Windows x64 发布物；暂存脚本只下载、校验和解压到 Git 忽略的
 `build/`，不会执行 Cua、安装全局组件、修改 PATH 或注册自启动。
+
+Windows 本地构建、私有命名管道 runtime 和专用无敏感内容测试窗口见
+[`docs/WINDOWS_DEVELOPMENT.md`](docs/WINDOWS_DEVELOPMENT.md)。构建结果是独立可选组件 ZIP，
+不会写入小助手主仓库。
 
 macOS 版本的构建、私有 runtime 和无敏感内容真机验收见
 [`docs/MACOS_DEVELOPMENT.md`](docs/MACOS_DEVELOPMENT.md)。macOS 固定上游 `0.32.0` universal
@@ -47,5 +51,6 @@ Sidecar 通过标准输入逐行接收 JSON，通过标准输出逐行返回 JSO
 
 ## 当前状态
 
-Windows 仍处于上游固定和适配层阶段。macOS 已加入构建与专用测试窗口源码，但必须在真实
-Intel Mac 上完成编译、权限、后台不抢焦点和鼠标验收后，才能宣称可供最终用户安装。
+Windows 已具备固定上游、本地 x64 Sidecar 构建、私有 bounded runtime 和专用测试窗口；仍需
+完成真机后台输入、不抢前台/焦点/鼠标及结构化拒绝验收，才能接入小助手。macOS 代码保留，
+但不作为当前 Windows 交付依据。

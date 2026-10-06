@@ -1,6 +1,11 @@
 # Screen Automation Cua Component 开发交接
 
-更新时间：2026-09-29（Asia/Shanghai）
+更新时间：2026-10-06（Asia/Shanghai）
+
+> 2026-10-06 续开发状态：Windows x64 已升级并固定 Cua Driver 0.34.0，加入私有 bounded
+> runtime、本地 Sidecar EXE/组件 ZIP 构建、专用 Win32 测试窗口，并完成首条后台文本与点击真机
+> 验收。详见 `docs/WINDOWS_DEVELOPMENT.md` 与 `docs/WINDOWS_ACCEPTANCE.md`。以下早期阶段记录中
+> 与此冲突的“尚未下载/打包”“没有远程”等描述已经失效。
 
 ## 1. 目标
 
@@ -15,11 +20,11 @@
 
 - 独立本地仓库：`D:\ai\screen-automation-cua-component`
 - 当前分支：`main`
-- 当前提交：`d8e2c22 feat: scaffold bounded Cua component adapter`
-- 远程仓库：尚未创建或配置
+- 当前提交：以 `git log -1` 为准
+- 公开远程仓库：`https://github.com/xiaozs-com/screen-automation-cua-component`
 - 小助手主仓库：`D:\ai\screen-automation-helper`
 - 小助手主仓库当前没有接入本组件；不要在未完成组件验收前宣称已经可用
-- 尚未下载、安装、启动、打包或重新分发 Cua Driver 二进制
+- 已在 Git 忽略的本地构建目录下载、校验、启动私有 runtime 并打包；没有全局安装 Cua
 
 ## 3. 已完成内容
 

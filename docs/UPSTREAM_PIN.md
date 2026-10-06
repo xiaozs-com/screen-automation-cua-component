@@ -1,13 +1,13 @@
 # Cua Driver 上游固定记录
 
-核验日期：2026-09-29（Asia/Shanghai）
+核验日期：2026-10-06（Asia/Shanghai）
 
 ## 固定版本
 
-- 稳定版本：`0.30.4`
-- 标签：`cua-driver-rs-v0.30.4`
-- 提交：`bf6c76786d938070f4ecf1e44004752f69f518b8`
-- 发布时间：`2026-09-28T21:38:51Z`
+- 稳定版本：`0.34.0`
+- 标签：`cua-driver-rs-v0.34.0`
+- 提交：`b0968e1b12834e485dda68789541a3cc57664a9f`
+- 发布时间：`2026-10-05T22:30:08Z`
 - 平台：仅 `windows-x64`
 - 许可证：MIT，固定副本见 `licenses/CUA_DRIVER_LICENSE.md`
 
@@ -17,12 +17,11 @@ Release 说明明确：纯 SemVer 的 Cua Driver 版本走稳定通道；带 `ni
 
 ## 官方发布物
 
-- 文件：`cua-driver-rs-0.30.4-windows-x86_64-binary.zip`
-- 官方下载地址：见 `upstream/cua-driver-0.30.4-windows-x64.lock.json`
-- 大小：`30,771,456` 字节
-- SHA-256：`7b0ec893797fdeb0514d96f5797ad6aa53617eadcba2e47856461f60140c757b`
-- `cua-driver.exe` 大小：`34,281,808` 字节
-- `cua-driver.exe` SHA-256：`94bb765aad94e2fdf715c6c152c4e2b2b1f93977779a7569e5abc6466beaeab2`
+- 文件：`cua-driver-rs-0.34.0-windows-x86_64-binary.zip`
+- 官方下载地址：见 `upstream/cua-driver-0.34.0-windows-x64.lock.json`
+- 大小：`31,314,221` 字节
+- SHA-256：`bcc520e50861c7092cf775846fec76ae386d7dcd6b5b408608b0ea4423a8b888`
+- `cua-driver.exe` 的大小、SHA-256 和 Authenticode 身份见同一锁文件
 - `cua-driver.exe` Authenticode：有效，签名者 `Cua AI, Inc.`，证书指纹记录在锁文件中
 
 实际 ZIP 包含 6 个根目录文件，而不是只有 `cua-driver.exe`。所有文件的大小和 SHA-256 都写入
@@ -56,7 +55,7 @@ Release 说明明确：纯 SemVer 的 Cua Driver 版本走稳定通道；带 `ni
 - 官方 Windows 工具契约要求 `get_window_state(pid, window_id)` 在每轮动作前生成新快照；
   `element_index` 还必须绑定匹配的 `snapshot_id`，更推荐使用自带快照身份的 `element_token`。
   截图坐标应绑定一次性 `capture_id`。这比当前脚手架策略更严格，阶段 B 必须据真实 `0.30.4`
-  输出更新 Sidecar 协议，不能把现有 16 项单元测试视为真机兼容证明。
+  输出更新 Sidecar 协议，不能把静态与单元测试视为真机兼容证明。
 - Windows 上裸 `cua-driver mcp` 可直接持有 SDK runtime，并在 stdin EOF 时清理；传 `--socket`
   才会选择外部 daemon。官方遥测文档同时说明一次性 CLI 调用会委托 daemon，因此当前
   `cua-driver call ...` 封装尚不能作为私有运行时方案的结论。阶段 B 应优先验证 MCP stdio
@@ -79,7 +78,7 @@ Release 说明明确：纯 SemVer 的 Cua Driver 版本走稳定通道；带 `ni
 
 ## 官方核对入口
 
-- Release：<https://github.com/trycua/cua/releases/tag/cua-driver-rs-v0.30.4>
+- Release：<https://github.com/trycua/cua/releases/tag/cua-driver-rs-v0.34.0>
 - Windows 工具契约：<https://cua.ai/docs/reference/cua-driver/mcp-tools-windows>
 - 权限模式：<https://cua.ai/docs/reference/cua-driver/permission-modes>
 - 遥测与隐私：<https://cua.ai/docs/reference/cua-driver/telemetry>

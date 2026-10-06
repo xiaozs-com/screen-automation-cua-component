@@ -1,14 +1,20 @@
 {
   "id": "cua-driver-windows",
-  "name": "后台窗口操作（Cua Driver）",
+  "name": "后台窗口操作（Cua Driver，Windows）",
   "version": "0.1.0",
   "protocol": "screen-automation-cua-sidecar@1",
-  "capabilities": [
-    "desktop.background-input@1"
-  ],
-  "supported_runtime_platforms": [
-    "windows-x64"
-  ],
+  "capabilities": ["desktop.background-input@1"],
+  "supported_runtime_platforms": ["windows-x64"],
+  "entry": "screen-automation-cua-sidecar.exe",
+  "driver_entry": "cua-driver.exe",
+  "runtime": {
+    "mode": "bounded",
+    "private_socket_required": true,
+    "autostart": false,
+    "foreground_fallback": false,
+    "telemetry": false,
+    "update_check": false
+  },
   "upstream": {
     "name": "Cua Driver",
     "source": "https://github.com/trycua/cua",
@@ -19,6 +25,5 @@
     "license": "MIT",
     "bundled": true
   },
-  "entry": "screen-automation-cua-sidecar.exe",
   "retains_user_data_on_uninstall": false
 }

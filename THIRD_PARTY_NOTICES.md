@@ -4,13 +4,13 @@
 
 - Project: Cua
 - Source: <https://github.com/trycua/cua>
-- Pinned Driver version: 0.30.4 (`cua-driver-rs-v0.30.4`)
-- Pinned source commit: `bf6c76786d938070f4ecf1e44004752f69f518b8`
+- Pinned Driver version: 0.34.0 (`cua-driver-rs-v0.34.0`)
+- Pinned source commit: `b0968e1b12834e485dda68789541a3cc57664a9f`
 - License: MIT
 - Copyright: Cua contributors
 
-This repository does not vendor a Cua Driver binary. The component build may download and redistribute only
-the exact Windows x64 release recorded in `upstream/cua-driver-0.30.4-windows-x64.lock.json`, after verifying
+This source repository does not vendor a Cua Driver binary. The local component build downloads and may redistribute only
+the exact Windows x64 release recorded in `upstream/cua-driver-0.34.0-windows-x64.lock.json`, after verifying
 the archive and every extracted file. The upstream MIT license is preserved at
 `licenses/CUA_DRIVER_LICENSE.md` and must be included in the component package.
 

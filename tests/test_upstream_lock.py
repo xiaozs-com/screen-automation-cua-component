@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-LOCK_PATH = ROOT / "upstream" / "cua-driver-0.30.4-windows-x64.lock.json"
+LOCK_PATH = ROOT / "upstream" / "cua-driver-0.34.0-windows-x64.lock.json"
 
 
 class UpstreamLockTests(unittest.TestCase):
@@ -17,7 +17,7 @@ class UpstreamLockTests(unittest.TestCase):
 
     def test_release_is_exactly_pinned_to_windows_x64(self) -> None:
         self.assertEqual(self.lock["platform"], "windows-x64")
-        self.assertEqual(self.lock["upstream"]["version"], "0.30.4")
+        self.assertEqual(self.lock["upstream"]["version"], "0.34.0")
         self.assertEqual(len(self.lock["upstream"]["commit"]), 40)
         self.assertIn("windows-x86_64-binary.zip", self.lock["asset"]["name"])
 
