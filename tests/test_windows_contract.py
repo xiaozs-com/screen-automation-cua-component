@@ -60,12 +60,19 @@ class WindowsContractTests(unittest.TestCase):
         self.assertNotIn("COMPONENT_SIGNING_PRIVATE_KEY", workflow)
         self.assertIn("retention-days: 7", workflow)
 
-    def test_catalog_metadata_warns_future_components_to_merge(self) -> None:
+    def test_release_metadata_generates_component_entry_not_global_catalog(self) -> None:
         metadata = (ROOT / "packaging/windows/create_release_metadata.ps1").read_text("utf-8")
-        self.assertIn("maintenance_notes", metadata)
-        self.assertIn("禁止覆盖或删除已有组件条目", metadata)
-        self.assertIn("浏览器增强是主仓库内置组件", metadata)
-        self.assertIn("最后上传本目录文件", metadata)
+        self.assertIn("catalog-entry.json", metadata)
+        self.assertIn("catalog_entry", metadata)
+        self.assertNotIn("Join-Path $OutputDirectory 'catalog.json'", metadata)
+        self.assertNotIn("maintenance_notes", metadata)
+
+    def test_catalog_entry_matches_component_contract(self) -> None:
+        metadata = (ROOT / "packaging/windows/create_release_metadata.ps1").read_text("utf-8")
+        self.assertIn("id = $component.id", metadata)
+        self.assertIn("manifests = [ordered]@{ 'windows-x64' = $ManifestUrl }", metadata)
+        self.assertIn("supported_platforms = @('win32')", metadata)
+        self.assertIn("retains_user_data_on_uninstall = $false", metadata)
 
 
 if __name__ == "__main__":

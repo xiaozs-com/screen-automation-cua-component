@@ -49,8 +49,9 @@ Windows 是当前优先交付平台。它只支持原生 `x64`，不支持 Windo
 
 GitHub 仓库只保存源码，不通过 GitHub Release 向小助手分发安装包。可选的手动工作流只生成保留
 7 天的未签名构建产物，不会发布 Release。Windows ZIP、签名安装清单和签名外部组件目录统一发布
-到小助手自有组件服务器。`create_release_metadata.ps1` 接收服务器最终 HTTPS 下载地址并生成待签名
-元数据；签名和上传必须在持有 `COMPONENT_SIGNING_PRIVATE_KEY` 的受控发布环境完成。
+到小助手自有组件服务器。`create_release_metadata.ps1` 接收服务器最终 HTTPS 下载地址，只生成本组件
+的待签名平台清单和未签名 `catalog-entry.json`；签名和上传必须在持有
+`COMPONENT_SIGNING_PRIVATE_KEY` 的受控发布环境完成。
 
 服务器布局与浏览器增强组件一致：
 
@@ -60,9 +61,11 @@ GitHub 仓库只保存源码，不通过 GitHub Release 向小助手分发安装
 /sah/components/cua-driver-windows/0.1.0/screen-automation-cua-component-0.1.0-windows-x64.zip
 ```
 
-`catalog.json` 与 `latest-windows-x64.json` 都必须使用小助手当前信任的组件密钥签名；ZIP 的大小与
-SHA-256 写入签名清单。历史版本目录需要保留，以便更新失败诊断和未来回退。
+`latest-windows-x64.json` 必须使用小助手当前信任的组件密钥签名；ZIP 的大小与 SHA-256 写入签名
+清单。`catalog-entry.json` 只交给全局目录维护流程合并，不直接作为小助手目录发布，也不包含签名。
+历史版本目录需要保留，以便更新失败诊断和未来回退。
 
-JSON 不使用非法的 `//` 注释。全局目录通过已签名的 `description` 和 `maintenance_notes` 字段记录
-维护规则：浏览器增强不进入外部目录；新增组件必须合并而非覆盖已有条目；组件 ID 与子目录必须唯一；
-修改后重新签署整个目录，并始终最后上传 `catalog.json`。
+本组件仓库不得生成或覆盖全局 `catalog.json`。目录维护者应把 Cua 的 `catalog-entry.json` 与
+OctopPet 等其他独立组件条目按唯一 ID 合并，保留所有已有有效条目，再重新签署整个全局目录并最后
+上传。JSON 不使用非法的 `//` 注释；维护说明使用全局目录中已签名的 `description` 和
+`maintenance_notes` 字段。
