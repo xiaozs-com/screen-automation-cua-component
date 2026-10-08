@@ -34,7 +34,7 @@
 - 小助手组件 ID：`cua-driver-windows`
 - Sidecar 协议：`screen-automation-cua-sidecar@1`
 - 中立能力标识：`desktop.background-input@1`
-- 当前版本：`0.1.0`
+- 当前版本：`0.1.1`
 
 ### 3.2 已实现代码
 

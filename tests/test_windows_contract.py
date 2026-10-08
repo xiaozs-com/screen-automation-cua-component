@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 import unittest
 from pathlib import Path
 
@@ -9,6 +10,21 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class WindowsContractTests(unittest.TestCase):
+    def test_windows_release_versions_are_consistent(self) -> None:
+        root_component = json.loads((ROOT / "component.json").read_text("utf-8"))
+        windows_component = json.loads(
+            (ROOT / "platforms/windows/component.json").read_text("utf-8")
+        )
+        package_source = (ROOT / "src/sah_cua_component/__init__.py").read_text("utf-8")
+        project_source = (ROOT / "pyproject.toml").read_text("utf-8")
+        source_version = re.search(r'^__version__ = "([^"]+)"$', package_source, re.MULTILINE)
+        project_version = re.search(r'^version = "([^"]+)"$', project_source, re.MULTILINE)
+        self.assertIsNotNone(source_version)
+        self.assertIsNotNone(project_version)
+        self.assertEqual(root_component["version"], windows_component["version"])
+        self.assertEqual(root_component["version"], source_version.group(1))
+        self.assertEqual(root_component["version"], project_version.group(1))
+
     def test_component_is_windows_x64_background_only(self) -> None:
         component = json.loads((ROOT / "platforms/windows/component.json").read_text("utf-8"))
         self.assertEqual(component["supported_runtime_platforms"], ["windows-x64"])

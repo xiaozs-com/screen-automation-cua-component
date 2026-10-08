@@ -1,7 +1,7 @@
 {
   "id": "cua-driver-windows",
   "name": "后台窗口操作（Cua Driver）",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "protocol": "screen-automation-cua-sidecar@1",
   "capabilities": [
     "desktop.background-input@1"

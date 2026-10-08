@@ -58,7 +58,7 @@ GitHub 仓库只保存源码，不通过 GitHub Release 向小助手分发安装
 ```text
 /sah/components/catalog.json
 /sah/components/cua-driver-windows/latest-windows-x64.json
-/sah/components/cua-driver-windows/0.1.0/screen-automation-cua-component-0.1.0-windows-x64.zip
+/sah/components/cua-driver-windows/<version>/screen-automation-cua-component-<version>-windows-x64.zip
 ```
 
 `latest-windows-x64.json` 必须使用小助手当前信任的组件密钥签名；ZIP 的大小与 SHA-256 写入签名
